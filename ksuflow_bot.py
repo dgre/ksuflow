@@ -45,7 +45,7 @@ async def meditation(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # Запуск
 def main():
-    TOKEN = os.getenv()
+    TOKEN = os.getenv("BOT_TOKEN")
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
