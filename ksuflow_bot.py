@@ -44,9 +44,9 @@ async def meditation(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Оформи подписку, чтобы получить доступ.")
 
 # Запуск
-def main():
-    TOKEN = os.getenv("BOT_TOKEN")
-    app = Application.builder().token(TOKEN).build()
+import os
+TOKEN = os.getenv("BOT_TOKEN")
+app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("meditation", meditation))
