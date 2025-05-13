@@ -1,3 +1,4 @@
+import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
@@ -5,13 +6,21 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Cont
 user_subscriptions = {}
 
 # Старт
-# Обработчик команды /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Привет! Это Ксю и мои медитации")
-    
-    # Открываем и отправляем видео
-    with open("Hi_video.mp4") as video:
-        await update.message.reply_video(video=video)
+    keyboard = [
+        [InlineKeyboardButton("Попробовать медитацию", callback_data='try')],
+        [InlineKeyboardButton("Оформить подписку", callback_data='subscribe')],
+        [InlineKeyboardButton("Что внутри?", callback_data='info')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text("Привет! Я бот для медитаций. Чем займёмся?", reply_markup=reply_markup)
+
+    # Отправка видео Hi_video.mp4 при старте
+    try:
+        with open("Hi_video.mp4", "rb") as video:
+            await update.message.reply_video(video=video, caption="Добро пожаловать! Вот видео-приветствие")
+    except FileNotFoundError:
+        await update.message.reply_text("Видео Hi_video.mp4 не найдено.")
 
 # Обработка кнопок
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -44,9 +53,13 @@ async def meditation(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Оформи подписку, чтобы получить доступ.")
 
 # Запуск
-import os
-TOKEN = os.getenv("BOT_TOKEN")
-app = Application.builder().token(TOKEN).build()
+
+def main():
+    TOKEN = os.getenv("BOT_TOKEN")
+    if not TOKEN:
+        raise ValueError("Переменная окружения BOT_TOKEN не установлена!")
+
+    app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("meditation", meditation))
