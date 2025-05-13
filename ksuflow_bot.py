@@ -13,6 +13,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Привет! Это Ксю! Принимай мои медитации утром и вечером до и после еды.", reply_markup=reply_markup)
+    with open("Hi_video.mp4", "rb") as video:
+        await update.message.reply_video(video=video)
 
 # Обработка кнопок
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
