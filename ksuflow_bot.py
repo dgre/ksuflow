@@ -5,14 +5,11 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Cont
 user_subscriptions = {}
 
 # Старт
+# Обработчик команды /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    keyboard = [
-        [InlineKeyboardButton("Попробовать медитацию", callback_data='try')],
-        [InlineKeyboardButton("Оформить подписку", callback_data='subscribe')],
-        [InlineKeyboardButton("Что внутри?", callback_data='info')]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("Привет! Это Ксю! Принимай мои медитации утром и вечером до и после еды.", reply_markup=reply_markup)
+    await update.message.reply_text("Привет! Это Ксю и мои медитации")
+    
+    # Открываем и отправляем видео
     with open("Hi_video.mp4", "rb") as video:
         await update.message.reply_video(video=video)
 
