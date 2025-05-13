@@ -10,7 +10,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Привет! Это Ксю и мои медитации")
     
     # Открываем и отправляем видео
-    with open("Hi_video.mp4", "rb") as video:
+    with open("Hi_video.mp4") as video:
         await update.message.reply_video(video=video)
 
 # Обработка кнопок
