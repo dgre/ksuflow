@@ -7,6 +7,17 @@ user_subscriptions = {}
 
 # Старт
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    
+    # Отправка видео Hi_video.mp4 при старте
+   async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Привет! Это Ксю и мой мир медитаций")
+    
+    try:
+        with open("Hi_video.mp4", "rb") as video:
+            await update.message.reply_video_note(video=video)
+    except FileNotFoundError:
+        await update.message.reply_text("Файл Hi_video.mp4 не найден или не соответствует требованиям.")
+    
     keyboard = [
         [InlineKeyboardButton("Попробовать медитацию", callback_data='try')],
         [InlineKeyboardButton("Оформить подписку", callback_data='subscribe')],
@@ -15,12 +26,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Привет! Я бот для медитаций. Чем займёмся?", reply_markup=reply_markup)
 
-    # Отправка видео Hi_video.mp4 при старте
-    try:
-        with open("Hi_video.mp4", "rb") as video:
-            await update.message.reply_video(video=video, caption="Добро пожаловать! Вот видео-приветствие")
-    except FileNotFoundError:
-        await update.message.reply_text("Видео Hi_video.mp4 не найдено.")
 
 # Обработка кнопок
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
